@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./CSS/signup.css">
+    </head>
+    <body>
+        <h1>가입하기</h1>
+        <form action="/signup" method="POST">
+            <div class="form-group">
+                <span>Name</span>
+                <input type="text" class="form-field" placeholder="Name" name="signup_name" id='signup_name' required />    
+            </div>
+            <div class="form-group">
+                <span>Email</span>
+                <input type="text" class="form-field" placeholder="Email" name="signup_email" id='signup_email' required />
+            </div>
+            <div class="form-group">
+                <span>ID</span>
+                <input type="text" class="form-field" placeholder="ID" name="signup_id" id='signup_id' required />
+            </div>
+            <div class="form-group">
+                <span>PASSWORD</span>
+                <input type="text" class="form-field" placeholder="PASSWORD" name="signup_pw" id='signup_pw' required />
+            </div>
+            <input type="submit" value="가입하기" class="form-btn">
+        </form>
+        
+        
+    </body>
+</html>
