@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="../public/CSS/home.css">
     </head>
     <body>
-        <h1><%=name%>님 환영합니다!!</h1>
+
+        <nav>
+            <div class="content">
+                <li>홈(홈화면에는 내가 찜한 곳만)</li>
+                <li>모든 게시판</li>
+                
+            </div>
+            <div class="home">
+                <h1><a href="#" style="color: white; text-decoration: none;"><%=name%></a>님 환영합니다!!</h1>
+                <form action="/logout" method="GET">
+                    <input type="submit" value="로그아웃" id="logout">                
+                </form>
+            </div>
+        </nav>
+        <div class="makepost">
+            찜목록
+        </div>
+        
+        
         
     </body>
 </html>
