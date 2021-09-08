@@ -58,3 +58,8 @@
 - 본인 글이면 수정, 삭제 가능
 - 본인 글이 아니면 조회와 댓글만 가능
 - 게시글 쓰기 버튼
+
+#### db
+- db 이름 : greenday
+- table 이름 : greenday_user
+- table 이름 : greenday_post
