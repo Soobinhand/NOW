@@ -18,15 +18,31 @@
 
 <br>
 
-## NOW 프로젝트를 하면서 쓰는 일기
-- 
 
-<br>
 
-## 기능
+
+## DB
+### Database
+- now
+### table
+- now_user
+    - id
+    - name
+    - email
+    - nickname
+    - pw
+- now_board
+- now_post
+
+## 백엔드
 ### USER
 - 회원가입
+    - id, name, email, nickname, pw, pw확인
+    - pw 암호화
 - 로그인
+    - nickname, pw
+    - nickname,pw이 틀렸을 시, 맞았을 시.
+    - 세션 처리
 - 로그아웃
 - 회원 정보 수정
 - 회원 탈퇴
@@ -58,31 +74,31 @@
 - 본인 글이 아니면 조회와 댓글만 가능
 - 게시글 쓰기 버튼
 
-## FLOW
+## 프론트엔드
 ### index.html 랜딩페이지
-- 가입하기 버튼
-- 로그인 버튼
-- 정적인 것으로 꾸밀 수는 있는거야.
+- ~~가입하기 버튼~~
+- ~~로그인 버튼~~
+- ~~정적인 것으로 꾸밀 수는 있는거야.~~
 ### signup.html
 - 이름, 이메일, 닉네임, 비밀번호, 비밀번호 확인 input 이 있고,
 - 가입하기 버튼
 ### login.html
 - 닉네임, 비밀번호
 - 로그인하기 버튼
-### home.html
+### home.ejs
 - 홈 버튼
 - 모든 게시판 버튼
 - 정보수정 버튼
 - 로그아웃 버튼 ; typedef 상단 탭
 - 찜목록
-### board.html
+### board.ejs
 - 홈 버튼
 - 게시판 검색 기능
 - 정보수정 버튼
 - 로그아웃 버튼 ; typedef 상단 탭
 - 모든 게시판 목록 나열
 - 게시판 만들기 버튼
-### post.html
+### post.ejs
 - 홈 버튼
 - 해당 게시판의 게시글 검색 기능
 - 정보수정 버튼
@@ -90,10 +106,14 @@
 - 해당 게시판이 무슨 게시판인지 이름 반환
 - 게시글 쓰기 버튼
 - 댓글
-### profile.html
+### profile.ejs
 - 닉네임, 비밀번호
 - 탈퇴하기 버튼
 - 내가 쓴 글이나 쓴 댓글 보기
 
+---
+---
+
 ## 해야할 목록 순서
-- "/" 에 해당하는 index.html 만들기
+- ~~"/" 에 해당하는 index.html 만들기~~
+- "/signup" 에 해당하는 signup.html

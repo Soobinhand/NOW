@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+}
+
+.landing_page{
+ 
+    top: 0;
+    width: 390px;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+    height: auto;
+}
+
+.landing_page > img{
+    width: 390px;
+}
+.landing_page > li{
+    list-style: none;
+    line-height: 1.67;
+}
+.landing_page > li > b{
+    color: #ef952c;
+}
+
+.landing_page >form> button{
+    width: 200px;
+    height: 50px;
+    margin-left: 95px;
+    background-color: #ef952c;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+.landing_page > form>button:hover{
+    opacity: 0.87;
+}
+
+::-webkit-scrollbar{width:2px;height:2px;}
+::-webkit-scrollbar-button{width:2px;height:2px;}
