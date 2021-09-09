@@ -11,7 +11,8 @@
     transform: translateX(-50%);
     height: auto;
 }
-
+::-webkit-scrollbar{width:2px;height:2px;}
+::-webkit-scrollbar-button{width:2px;height:2px;}
 .landing_page > img{
     width: 390px;
 }
@@ -40,5 +41,3 @@
     opacity: 0.87;
 }
 
-::-webkit-scrollbar{width:2px;height:2px;}
-::-webkit-scrollbar-button{width:2px;height:2px;}

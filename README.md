@@ -37,7 +37,7 @@
 ## 백엔드
 ### USER
 - 회원가입
-    - id, name, email, nickname, pw, pw확인
+    - ~~id, name, email, nickname, pw, pwcheck~~
     - pw 암호화
 - 로그인
     - nickname, pw
@@ -80,8 +80,8 @@
 - ~~로그인 버튼~~
 - ~~정적인 것으로 꾸밀 수는 있는거야.~~
 ### signup.html
-- 이름, 이메일, 닉네임, 비밀번호, 비밀번호 확인 input 이 있고,
-- 가입하기 버튼
+- ~~이름, 이메일, 닉네임, 비밀번호, 비밀번호 확인 input 이 있고,~~
+- ~~가입하기 버튼~~
 ### login.html
 - 닉네임, 비밀번호
 - 로그인하기 버튼
@@ -116,4 +116,4 @@
 
 ## 해야할 목록 순서
 - ~~"/" 에 해당하는 index.html 만들기~~
-- "/signup" 에 해당하는 signup.html
+- ~~"/signup" 에 해당하는 signup.html~~

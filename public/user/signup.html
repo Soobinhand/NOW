@@ -2,12 +2,46 @@
 <html>
     <head>
         <title>NOW - 회원가입</title>
+        <link rel="stylesheet" href="./CSS/signup.css">
     </head>
     <body>
-        <img src="" alt="logo">
-        <h1>안녕하세요. 가입하셈.</h1>
-        
-       
+        <div class="signup">
+            <img src="./img/logo.jpg" alt="logo">
+            <br>
+            <br>
+
+            
+            <form action="/signup" method="post">
+                <div class="form-group">
+                    <span>이름</span>
+                    <input class="form-field" type="text" placeholder="이름" name="signup_name" id="signup_name" required>
+                </div>
+                <div class="form-group">
+                    <span>이메일</span>
+                    <input class="form-field" type="email" placeholder="이메일" name="signup_email" id="signup_email" required>
+                </div>
+                <div class="form-group">
+                    <span>닉네임</span>
+                    <input class="form-field" type="text" placeholder="닉네임" name="signup_nickname" id="signup_nickname" required>
+                </div>
+                <div class="form-group">
+                    <span>비밀번호</span>
+                    <input class="form-field" type="password" placeholder="비밀번호" name="signup_pw" id="signup_pw" required>
+                </div>
+                <div class="form-group">
+                    <span>비밀번호 확인</span>
+                    <input class="form-field" type="password" placeholder="비밀번호 확인" name="signup_pwcheck" id="signup_pwcheck" required>
+                </div>
+                <button type="submit">가입하기</button>
+            </form>
+            
+                
+            
+            
+            
+            
+        </div>
         
     </body>
+    
 </html>

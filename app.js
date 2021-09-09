@@ -13,6 +13,19 @@ app.listen(8080,function(){
     console.log('server start')
 })
 ///////////////////////////////////////////--/////
+var mysql = require('mysql')
+
+var mysqlClient = mysql.createConnection({
+    host:'localhost',
+    port:'3306',
+    user:'root',
+    password:'1234',
+    database:'greenday'
+})
+
+mysqlClient.connect()
+
+///////////////////////////////////////////--/////
 var user = require('./routers/user')
 app.use('/',user)
 ///////////////////////////////////////////--/////

@@ -20,6 +20,8 @@
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
+    "mongodb": "^4.1.1",
+    "mongoose": "^6.0.5",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
