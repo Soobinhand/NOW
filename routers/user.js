@@ -1,6 +1,19 @@
 var express = require('express')
 var router = express.Router()
 var path = require('path')
+var crypto = require('crypto')
+var cookieParser = require('cookie-parser')
+var now_session = require('express-session')
+///////////////////////////////////////////세션 및 쿠키/////
+router.use(now_session({
+    secret: 'my key',           
+    resave: true,
+    saveUninitialized:true
+}));
+router.use(cookieParser())
+///////////////////////////////////////////nickname 처리/////
+var  nickname;
+var id;
 ///////////////////////////////////////////DB연결공간/////
 var mysql = require('mysql')
 var mysqlClient = mysql.createConnection({
@@ -27,6 +40,8 @@ router.post("/signup",function(req,res){
         var email = req.body.signup_email;
         var nickname = req.body.signup_nickname;
         var pw = req.body.signup_pw;
+        var salt = Math.round((new Date().valueOf()*Math.random()))+"";
+        var hashpw = crypto.createHash("sha512").update(pw+salt).digest("hex");
         var pwcheck = req.body.signup_pwcheck
         var result = checkReg(pw,pwcheck);
         if(result==1){
@@ -36,13 +51,7 @@ router.post("/signup",function(req,res){
                     res.send("<script>alert('중복된 아이디입니다.');location.href='/signup';</script>");
                     
                 }else{
-                    var regData = {
-                        name:name,
-                        email:email,
-                        nickname:nickname,
-                        pw:pw
-                    }
-                    mysqlClient.query('insert into greenday_user(name,email,nickname,pw) values(?,?,?,?)',[name,email,nickname,pw],function(error,rows){
+                    mysqlClient.query('insert into greenday_user(name,email,nickname,pw,salt) values(?,?,?,?,?)',[name,email,nickname,hashpw,salt],function(error,rows){
                         if(error){
                             throw error;
                         }
@@ -69,6 +78,37 @@ var checkReg = function (pw,pwcheck) {
 
 router.get("/login",function(req,res){
     res.sendFile(path.join(__dirname,"../public/user/login.html"))
+})
+
+router.post("/login",function(req,res){
+    
+    nickname = req.body.login_nickname
+    
+    var pw = req.body.login_pw
+    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(errors,rows){
+        if (errors) {
+            throw errors;
+        }
+        if(rows[0]){
+            var salt = rows[0].salt;
+            var hashpw = crypto.createHash("sha512").update(pw+salt).digest("hex");
+            if (hashpw==rows[0].pw) {
+                
+                res.redirect('/home')
+            }else{
+                res.send("<script>alert('비밀번호가 틀렸습니다.');location.href='/login';</script>");
+            }
+        }else{
+            res.send("<script>alert('등록된 아이디가 없습니다.');location.href='/login';</script>");
+
+        }
+        
+    })
+})
+///////////////////////////////////////////로그인 후 home 으로 경로 변경/////
+
+router.get("/home",function(req,res){
+    res.render('home.ejs',{nickname:nickname})
 })
 
 module.exports = router

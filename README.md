@@ -38,10 +38,10 @@
 ### USER
 - 회원가입
     - ~~id, name, email, nickname, pw, pwcheck~~
-    - pw 암호화
+    - ~~pw 암호화~~
 - 로그인
-    - nickname, pw
-    - nickname,pw이 틀렸을 시, 맞았을 시.
+    - ~~nickname, pw~~
+    - ~~nickname,pw이 틀렸을 시, 맞았을 시.~~
     - 세션 처리
 - 로그아웃
 - 회원 정보 수정
@@ -83,8 +83,8 @@
 - ~~이름, 이메일, 닉네임, 비밀번호, 비밀번호 확인 input 이 있고,~~
 - ~~가입하기 버튼~~
 ### login.html
-- 닉네임, 비밀번호
-- 로그인하기 버튼
+- ~~닉네임, 비밀번호~~
+- ~~로그인하기 버튼~~
 ### home.ejs
 - 홈 버튼
 - 모든 게시판 버튼
@@ -117,3 +117,5 @@
 ## 해야할 목록 순서
 - ~~"/" 에 해당하는 index.html 만들기~~
 - ~~"/signup" 에 해당하는 signup.html~~
+- ~~회원가입 암호화, "/login" 에 해당하는 login.html~~
+- home.ejs 꾸미기
