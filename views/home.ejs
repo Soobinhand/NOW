@@ -2,10 +2,34 @@
 <html>
     <head>
         <title>NOW - 홈</title>
-        <link rel="stylesheet" href="./CSS/index.css">
+        <link rel="stylesheet" href="./CSS/home.css">
     </head>
     <body>
-        <%=nickname%>님 안녕하세요
+        <div class="home">
+            <div class="home_top">
+                <div class="home_home">
+                    <a href="/home">
+                        <img src="./img/logo.jpg" alt="logo">
+                    </a>
+                </div>
+                <div class="home_board">
+                    <a href="/board">게시판</a>
+                </div>
+                <div class="home_profile">
+                    <a href="/profile"><%=nickname%>님</a>
+                </div>
+                <a href="/profile">
+                    <img src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/377AF66A-5D06-421D-9A8A-CFA8DD52822C.svg" alt="">                
+                </a>
+            </div>
+            <hr class="home_line">
+            <p class="home_text1">찜목록</p>
+            
+                   
+            
+            
+        </div>
+        
         
     </body>
 </html>
