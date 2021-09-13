@@ -97,6 +97,7 @@
 - 로그아웃 버튼 ; typedef 상단 탭
 - 모든 게시판 목록 나열
 - 게시판 만들기 버튼
+- 만들면 모든 게시판 페이지에 목록화
 ### post.ejs
 - 홈 버튼
 - 해당 게시판의 게시글 검색 기능
@@ -119,3 +120,4 @@
 - ~~"/signup" 에 해당하는 signup.html~~
 - ~~회원가입 암호화, "/login" 에 해당하는 login.html~~
 - ~~home.ejs 꾸미기~~
+- board.ejs 생성, greenday_board 테이블 생성
