@@ -32,7 +32,14 @@
     - nickname
     - pw
 - now_board
+    - id
+    - title
+    - sub
 - now_post
+    - id
+    - title
+    - content
+    - nickname
 
 ## 백엔드
 ### USER
@@ -55,11 +62,11 @@
 - 찜 목록 보여주기
 
 ### BOARD
-- 홈 버튼
+- ~~홈 버튼~~
 - 게시판 검색 바
-- 이름(정보수정) 버튼
+- ~~이름(정보수정) 버튼~~
 - 로그아웃 버튼 (여기까지는 상단 탭)
-- 게시판 만들기 버튼
+- ~~게시판 만들기 버튼~~
 
 ### POST
 - 홈 버튼
@@ -91,12 +98,12 @@
 - ~~정보수정 버튼 ; typedef 상단 탭~~
 - ~~찜목록~~
 ### board.ejs
-- 홈 버튼
+- ~~홈 버튼~~
 - 게시판 검색 기능
-- 정보수정 버튼
+- ~~정보수정 버튼~~
 - 로그아웃 버튼 ; typedef 상단 탭
 - 모든 게시판 목록 나열
-- 게시판 만들기 버튼
+- ~~게시판 만들기 버튼~~
 - 만들면 모든 게시판 페이지에 목록화
 ### post.ejs
 - 홈 버튼
@@ -120,4 +127,5 @@
 - ~~"/signup" 에 해당하는 signup.html~~
 - ~~회원가입 암호화, "/login" 에 해당하는 login.html~~
 - ~~home.ejs 꾸미기~~
-- board.ejs 생성, greenday_board 테이블 생성
+- ~~board.ejs 생성, greenday_board 테이블 생성~~
+- 세션 처리 passport 처리

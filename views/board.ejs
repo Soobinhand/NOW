@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NOW - dfdfd</title>
+        <link rel="stylesheet" type="text/css" href="../public/CSS/home.css">
+    </head>
+    <body>
+       
+        <div class="home">
+            <div class="home_top">
+                <div class="home_home">
+                    <a href="/home">
+                        <img src="../public/img/logo.jpg" alt="logo">
+                    </a>
+                </div>
+                <div class="home_board">
+                    <a href="/newboard">게시판 추가</a>
+                </div>
+                <div class="home_profile">
+                    <a href="/profile"><%=nickname%>님</a>
+                </div>
+                <a href="/profile">
+                    <img src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/377AF66A-5D06-421D-9A8A-CFA8DD52822C.svg" alt="">                
+                </a>
+            </div>
+            <hr class="home_line">
+            
+            <div class="home_board">
+                
+                <table id="board_table">
+                    
+                    
+                        <tr>
+                            <th></th>
+                            <th>게시판 제목</th>
+                            <th>주제</th>
+                        </tr>
+                    
+                    
+                        <% for(i = 0; i < title.length; i++) { %>
+                        <tr>
+                            <td><p><%=i+1 %></p></td>
+                            <td><p class="table_text"><%=title[i].title %></p></td>
+                            <td><p><%=title[i].sub %></p></td>
+                        </tr>
+                        <% } %>
+                    
+                </table>
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </body>
+</html>

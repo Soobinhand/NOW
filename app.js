@@ -3,7 +3,9 @@ var app = express()
 var ejs = require('ejs')
 var path = require('path')
 var bodyparser = require('body-parser')
-app.use(express.static('public'))
+var passport = require('passport')
+app.use(express.static(path.join(__dirname,'/public')))
+app.use('/public', express.static(__dirname + '/public'));
 app.use(bodyparser.json()) //다음에 찾아와라
 app.use(bodyparser.urlencoded({
     extended:true
@@ -29,3 +31,4 @@ mysqlClient.connect()
 var user = require('./routers/user')
 app.use('/',user)
 ///////////////////////////////////////////--/////
+
