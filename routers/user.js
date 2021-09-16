@@ -120,7 +120,13 @@ router.get("/board",function(req,res){
     })
     
 })
-
+///////////////////////////////////////////게시판 검색/////
+router.post("/board/search",function(req,res){
+    var search_title = "%"+req.body.search_title+"%";
+    mysqlClient.query('select * from greenday_board where title like ?',[search_title],function(errors,rows){
+        res.render('board.ejs',{nickname:nickname,title:rows,sub:rows})
+    })
+})
 ///////////////////////////////////////////게시판 만들기/////
 router.get("/newboard",function(req,res){
     res.sendFile(path.join(__dirname,"../public/board/new_board.html"))
@@ -146,6 +152,42 @@ router.post("/newboard",function(req,res){
         }
     })
     
+})
+///////////////////////////////////////////해당 게시판의 게시글/////
+router.post("/post",function(req,res){
+    var title = req.body.post_title;
+    res.render('post.ejs',{nickname:nickname,title:title})
+})
+///////////////////////////////////////////해당 게시판의 게시글 쓰기/////
+router.get("/newpost",function(req,res){
+    res.sendFile(path.join(__dirname,"../public/board/new_post.html"))
+})
+
+router.post("/newpost",function(req,res){
+    
+    title = req.body.new_board_title;
+    var sub = req.body.new_board_sub;
+    
+        
+        
+            mysqlClient.query('insert into greenday_post(title, content) values(?,?)',[title,sub],function(errors,rows){
+                if (errors) {
+                    throw errors;
+                }
+                
+                res.send("<script>alert('게시판 등록이 완료되었습니다.');location.href='/board';</script>");
+                
+            })
+        
+    
+    
+})
+///////////////////////////////////////////해당 게시판의 게시글 검색창/////
+router.post("/post/search",function(req,res){
+    var search_title = "%"+req.body.search_title+"%";
+    mysqlClient.query('select * from greenday_post where title like ?',[search_title],function(errors,rows){
+        res.render('post.ejs',{nickname:nickname,title:rows,sub:rows})
+    })
 })
 module.exports = router
 

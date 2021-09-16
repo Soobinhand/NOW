@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NOW - 게시글</title>
+        <link rel="stylesheet" type="text/css" href="../public/CSS/home.css">
+    </head>
+    <body>
+       
+        <div class="home">
+            <div class="home_top">
+                <div class="home_home">
+                    <a href="/home">
+                        <img src="../public/img/logo.jpg" alt="logo">
+                    </a>
+                </div>
+                <div class="home_board">
+                    <a href="/newpost">게시글 추가</a>
+                </div>
+                <form action="/post/search" method="POST">
+                    <input type="text" name="search_title" id="search_title">
+                </form>
+                <div class="home_profile">
+                    <a href="/profile"><%=nickname%>님</a>
+                </div>
+                <a href="/profile">
+                    <img src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/377AF66A-5D06-421D-9A8A-CFA8DD52822C.svg" alt="">                
+                </a>
+            </div>
+            <hr class="home_line">
+            
+            <div class="home_board">
+                
+                <p><%=title%></p>
+                
+            </div>
+            
+            
+        </div>
+        
+        
+    </body>
+</html>
