@@ -4,6 +4,10 @@ var path = require('path')
 var crypto = require('crypto')
 var cookieParser = require('cookie-parser')
 var now_session = require('express-session')
+var moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
+
 ///////////////////////////////////////////세션 및 쿠키/////
 router.use(now_session({
     secret: 'my key',           
@@ -113,7 +117,6 @@ router.get("/home",function(req,res){
 
 ///////////////////////////////////////////게시판/////
 router.get("/board",function(req,res){
-    
     mysqlClient.query('select * from greenday_board',function(errors,rows){
         res.render('board.ejs',{nickname:nickname,title:rows,sub:rows})
         
@@ -153,11 +156,21 @@ router.post("/newboard",function(req,res){
     })
     
 })
+var board_title
 ///////////////////////////////////////////해당 게시판의 게시글/////
 router.post("/post",function(req,res){
-    var title = req.body.post_title;
-    res.render('post.ejs',{nickname:nickname,title:title})
+    board_title = req.body.post_title;
+    res.redirect('/post')
 })
+router.get("/post",function(req,res){
+    mysqlClient.query('select * from greenday_post where board_title=?',[board_title],function(errors,rows){
+        res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+        
+    })
+    
+})
+var post_time = moment().format('YYYY-MM-DD HH:mm:ss');
+
 ///////////////////////////////////////////해당 게시판의 게시글 쓰기/////
 router.get("/newpost",function(req,res){
     res.sendFile(path.join(__dirname,"../public/board/new_post.html"))
@@ -165,17 +178,17 @@ router.get("/newpost",function(req,res){
 
 router.post("/newpost",function(req,res){
     
-    title = req.body.new_board_title;
-    var sub = req.body.new_board_sub;
-    
+    var title = req.body.post_title;
+    var content = req.body.post_content;
+
         
-        
-            mysqlClient.query('insert into greenday_post(title, content) values(?,?)',[title,sub],function(errors,rows){
+
+            mysqlClient.query('insert into greenday_post(title, content,nickname,board_title,post_time) values(?,?,?,?,?)',[title,content,nickname,board_title,post_time],function(errors,rows){
                 if (errors) {
                     throw errors;
                 }
                 
-                res.send("<script>alert('게시판 등록이 완료되었습니다.');location.href='/board';</script>");
+                res.send("<script>alert('게시글 등록이 완료되었습니다.');location.href='/post';</script>");
                 
             })
         
@@ -186,8 +199,26 @@ router.post("/newpost",function(req,res){
 router.post("/post/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
     mysqlClient.query('select * from greenday_post where title like ?',[search_title],function(errors,rows){
-        res.render('post.ejs',{nickname:nickname,title:rows,sub:rows})
+        
+        res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
     })
+})
+var post_title;
+///////////////////////////////////////////해당 게시글 누르고 들어갔을때. 게시글 보여주기/////
+router.post("/post/post_title",function(req,res){
+    
+    post_title= req.body.post_title;
+    
+
+    res.redirect('/post/post_title')
+})
+
+router.get("/post/post_title",function(req,res){
+    mysqlClient.query('select * from greenday_post where title=?',[post_title],function(errors,rows){
+        res.render('post_title.ejs',{nickname:nickname,title:rows[0].title,content:rows[0].content})
+        
+    })
+    
 })
 module.exports = router
 

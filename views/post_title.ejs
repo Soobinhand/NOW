@@ -34,35 +34,9 @@
             
             <div class="home_board">
                 
-                <p class="post_text"><%=board_title%></p>
-                <table id="board_table">
-                    
-                    
-                    <tr>
-                        <th></th>
-                        <th>게시글 제목</th>
-                        <th>작성자</th>
-                        <th>작성시간</th>
-                    </tr>
+                <%=title%> 
+                <%=content%> 
                 
-                
-                    <% for(i = 0; i < title.length; i++) { %>
-                    <tr>
-                        <td><p><%=i+1 %></p></td>
-                        <td>
-                            
-                            <form action="/post/post_title" method="post">
-                                <input type="submit" name="post_title" id="post_title" class="post_title" value="<%=title[i].title %>">
-                            </form>
-                            
-                            </td>
-                            <td><%=title[i].nickname%></td>
-                            <td><%=title[i].post_time%></td>
-                        
-                    </tr>
-                    <% } %>
-                
-            </table>
             </div>
             
             

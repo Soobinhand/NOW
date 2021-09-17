@@ -133,6 +133,12 @@
     
     
 }
+.post_text{
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #ef952c;
+    font-weight: 700;
+}
 .search_title_btn > img{
     width: 20px;
 }
