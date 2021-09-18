@@ -41,24 +41,33 @@
 .home_board{
     margin-top: 20px;
     margin-left: 40px;
+    display: flex;
 }
+
 #board_table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    
+    overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
   }
   
   #board_table td, #board_table th {
     border: none;
     padding: 8px;
+   
   }
-  
+ 
   #board_table td:nth-child(2){
       width: 150px;
+     
   }
-  #board_table td:nth-child(3){
-    width: 200px;
+ 
+#board_table td:nth-child(2):hover{
+    border-bottom: 1px solid #0d6efd;
+   
 }
+
  
   #board_table th {
     padding-top: 12px;
@@ -66,11 +75,13 @@
     text-align: left;
     background-color: #ef952c;
     color: white;
+    
   }
   #board_table td{
     border-bottom: 1px solid #ddd;
-
+    
   }
+  
   .post_title{
       cursor: pointer;
       text-decoration: none;
@@ -78,10 +89,58 @@
       border: none;
       font-weight: 700;
       font-size: 15px;
+      width: 150px;
       background-color: #fff;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
   }
+.silsigan_post{
+    margin-left: 150px;
+    height: 20px;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+}
 
-
+.silsigan_post td, .silsigan_post th {
+    border: none;
+    padding: 8px;
+  }
+.silsigan_post th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #ef952c;
+    color: white;
+}
+.silsigan_post td{
+    border-bottom: 1px solid #ddd;
+    width: 150px;
+}
+.silsigan_post td:hover{
+    
+    border-bottom: 1px solid #0d6efd;
+}
+ .silsigan{
+    cursor: pointer;
+    text-decoration: none;
+    color: #0d6efd;
+    border: none;
+    font-weight: 900;
+    width: 200px;
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    
+ }
 
 .home_board > a{
     text-decoration: none;
@@ -138,6 +197,9 @@
     margin-bottom: 20px;
     color: #ef952c;
     font-weight: 700;
+    margin-left: 50px;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 .search_title_btn > img{
     width: 20px;

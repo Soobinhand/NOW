@@ -31,10 +31,14 @@
                 </button>
             </form>
             <hr class="home_line">
-            
+            <p class="post_text"><%=board_title%></p>
             <div class="home_board">
                 
-                <p class="post_text"><%=board_title%></p>
+                
+                
+
+
+
                 <table id="board_table">
                     
                     
@@ -51,7 +55,7 @@
                         <td><p><%=i+1 %></p></td>
                         <td>
                             
-                            <form action="/post/post_title" method="post">
+                            <form action="/post/post_title/<%=title[i].id%>" method="post">
                                 <input type="submit" name="post_title" id="post_title" class="post_title" value="<%=title[i].title %>">
                             </form>
                             

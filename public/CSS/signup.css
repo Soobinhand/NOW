@@ -83,8 +83,7 @@
     display: flex;
     width: 100%;
   }
-  .form-group > span,
-  .form-group .form-field {
+  .form-group > span{
     white-space: nowrap;
     display: block;
   }
