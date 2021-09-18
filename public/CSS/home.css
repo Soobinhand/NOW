@@ -41,7 +41,7 @@
 .home_board{
     margin-top: 20px;
     margin-left: 40px;
-    display: flex;
+  
 }
 
 #board_table {
@@ -97,7 +97,6 @@
       text-align: left;
   }
 .silsigan_post{
-    margin-left: 150px;
     height: 20px;
     border: none;
     font-family: Arial, Helvetica, sans-serif;
@@ -105,6 +104,7 @@
     overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    
 }
 
 .silsigan_post td, .silsigan_post th {
@@ -120,7 +120,7 @@
 }
 .silsigan_post td{
     border-bottom: 1px solid #ddd;
-    width: 150px;
+    width: 400px;
 }
 .silsigan_post td:hover{
     

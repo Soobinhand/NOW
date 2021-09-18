@@ -130,7 +130,9 @@ router.get("/board",function(req,res){
 router.post("/board/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
     mysqlClient.query('select * from greenday_board where title like ?',[search_title],function(errors,rows){
-        res.render('board.ejs',{nickname:nickname,title:rows,sub:rows})
+        mysqlClient.query('select * from greenday_post order by post_time desc',function(errors, results){
+            res.render('board.ejs',{title:rows,atitle:results,nickname:nickname,sub:rows,board_title:board_title,post_time:rows})
+        })
     })
 })
 ///////////////////////////////////////////게시판 만들기/////
