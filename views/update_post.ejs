@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NOW - 게시글 수정</title>
+        <link rel="stylesheet" type="text/css" href="../public/CSS/signup.css">
+    </head>
+    <body>
+        <div class="signup">
+            <img src="./img/logo.jpg" alt="logo">
+            <br>
+            <br>
+
+            
+            <form action="/update" method="post">
+                <div class="form-group">
+                    <span style="white-space: nowrap;">제목</span>
+                    <input value="<%=title%>" class="form-field" type="text" name="post_title" id="post_title" required>
+                </div>
+                <div class="form-group">
+                    <span>내용</span>
+                    <textarea rows="4" cols="30" class="form-field" type="text" name="post_content" id="post_content" required
+                    style="width: 100%; height: 200px; resize: none;"><%=content%></textarea>
+                </div>
+                
+                <button type="submit">완료</button>
+            </form>
+            
+                
+            <a href="/post/post_title/:id">취소</a>
+            
+            
+            
+        </div>
+        
+            
+            
+           
+               
+                
+                
+              
+                
+                
+         
+           
+        
+        
+    </body>
+</html>

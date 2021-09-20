@@ -110,8 +110,14 @@ router.post("/login",function(req,res){
 })
 ///////////////////////////////////////////로그인 후 home 으로 경로 변경/////
 
+
 router.get("/home",function(req,res){
-    res.render('home.ejs',{nickname:nickname,board_title:board_title})
+    
+    
+       
+        res.render('home.ejs',{nickname:nickname})
+   
+    
 })
 
 
@@ -168,14 +174,49 @@ router.post("/post",function(req,res){
     res.redirect('/post')
 })
 router.get("/post",function(req,res){
-    mysqlClient.query('select * from greenday_post where board_title=?',[board_title],function(errors,rows){
+    mysqlClient.query('select * from greenday_post where board_title=? order by post_time desc',[board_title],function(errors,rows){
         res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+        
+    })
+    
+})
+router.post("/delete",function(req,res){
+        mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,result){
+            if(result[0].nickname===nickname){
+                mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
+                    res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                })
+            }else{
+                res.send("<script>alert('삭제 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
+
+            }
+
+        })
+        
+    
+})
+
+router.get("/update",function(req,res){
+    mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
+        if(rows[0].nickname===nickname){
+            res.render('update_post.ejs',{nickname:rows[0].nickname,title:rows[0].title,content:rows[0].content,id:rows[0].id})
+        }else{
+            res.send("<script>alert('수정 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
+        }
         
     })
     
 })
 
 
+router.post("/update",function(req,res){
+    var update_title = req.body.post_title;
+    var update_content = req.body.post_content;
+    var post_time = moment().format('YYYY-MM-DD HH:mm:ss');
+    mysqlClient.query('update greenday_post set title=?,content=?,post_time=? where id=?',[update_title,update_content,post_time,post_id],function(errors,rows){
+        res.send("<script>alert('게시글이 수정되었습니다.');location.href='/post/post_title/:id';</script>");
+    })
+})
 ///////////////////////////////////////////해당 게시판의 게시글 쓰기/////
 router.get("/newpost",function(req,res){
     res.sendFile(path.join(__dirname,"../public/board/new_post.html"))
@@ -203,11 +244,14 @@ router.post("/newpost",function(req,res){
 ///////////////////////////////////////////해당 게시판의 게시글 검색창/////
 router.post("/post/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
-    mysqlClient.query('select * from greenday_post where title like ?',[search_title],function(errors,rows){
+    mysqlClient.query('select * from greenday_post where title like ? and board_title=?',[search_title,board_title],function(errors,rows){
         
         res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
     })
 })
+
+
+
 var post_title;
 var post_id;
 ///////////////////////////////////////////해당 게시글 누르고 들어갔을때. 게시글 보여주기/////
@@ -220,7 +264,8 @@ router.post("/post/post_title/:id",function(req,res){
 })
 
 router.get("/post/post_title/:id",function(req,res){
-    mysqlClient.query('select * from greenday_post where title=? and id=?',[post_title,post_id],function(errors,rows){
+    
+    mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
         res.render('post_title.ejs',{nickname:rows[0].nickname,title:rows[0].title,content:rows[0].content,id:rows[0].id})
         
     })
