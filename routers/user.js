@@ -20,6 +20,7 @@ var  nickname;
 var title;
 ///////////////////////////////////////////DB연결공간/////
 var mysql = require('mysql')
+const { ok } = require('assert')
 var mysqlClient = mysql.createConnection({
     host:'localhost',
     port:'3306',
@@ -173,19 +174,25 @@ router.post("/post",function(req,res){
     board_title = req.body.post_title;
     res.redirect('/post')
 })
+
 router.get("/post",function(req,res){
+    
     mysqlClient.query('select * from greenday_post where board_title=? order by post_time desc',[board_title],function(errors,rows){
-        res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
-        
+   
+            res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+
     })
     
 })
 router.post("/delete",function(req,res){
         mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,result){
             if(result[0].nickname===nickname){
-                mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
-                    res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                mysqlClient.query('delete from greenday_comment where id=?',[post_id],function(errors,rows){
+                    mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
+                        res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                    })
                 })
+                
             }else{
                 res.send("<script>alert('삭제 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
 
@@ -195,6 +202,9 @@ router.post("/delete",function(req,res){
         
     
 })
+
+
+
 
 router.get("/update",function(req,res){
     mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
@@ -244,7 +254,7 @@ router.post("/newpost",function(req,res){
 ///////////////////////////////////////////해당 게시판의 게시글 검색창/////
 router.post("/post/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
-    mysqlClient.query('select * from greenday_post where title like ? and board_title=?',[search_title,board_title],function(errors,rows){
+    mysqlClient.query('select * from greenday_post where title like ? and board_title=? order by post_time desc',[search_title,board_title],function(errors,rows){
         
         res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
     })
@@ -266,8 +276,73 @@ router.post("/post/post_title/:id",function(req,res){
 router.get("/post/post_title/:id",function(req,res){
     
     mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
-        res.render('post_title.ejs',{nickname:rows[0].nickname,title:rows[0].title,content:rows[0].content,id:rows[0].id})
+        mysqlClient.query('select * from greenday_comment where id=?',[post_id],function(errors,result){
+            
+            res.render('post_title.ejs',{nickname:rows[0].nickname,title:rows[0].title,content:rows[0].content,id:rows[0].id,comment:result})
+
+        })
         
+    })
+    
+})
+
+///////////////////////////////////////////프로필/////
+router.get("/profile",function(req,res){
+    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(errors,rows){
+        res.render('profile.ejs',{nickname:nickname, email:rows[0].email, name:rows[0].name});
+    })
+})
+router.get("/profile/edit_pw",function(req,res){
+    res.render('edit_pw.ejs');
+})
+
+router.post("/edit",function(req,res){
+    var original_pw = req.body.original_pw;
+    var edit_pw = req.body.edit_pw;
+    var confirm_pw = req.body.confirm_pw;
+    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(errors,rows){
+        var salt = rows[0].salt;
+        var hashpw = crypto.createHash("sha512").update(original_pw+salt).digest("hex");
+        if(hashpw===rows[0].pw){
+            if(edit_pw===confirm_pw){
+                var new_salt = Math.round((new Date().valueOf()*Math.random()))+"";
+                var hashpw = crypto.createHash("sha512").update(edit_pw+new_salt).digest("hex");
+                mysqlClient.query('update greenday_user set salt=?,pw=? where nickname=?',[new_salt,hashpw,nickname],function(errors,result){
+                    res.send("<script>alert('비밀번호 변경이 완료되었습니다. 다시 로그인 해주세요.');location.href='/login';</script>");
+                })
+            }else{
+                res.send("<script>alert('비밀번호가 틀립니다.');location.href='/profile/edit_pw';</script>");
+            }
+            
+        }else{
+            res.send("<script>alert('기존 비밀번호와 일치하지 않습니다.');location.href='/profile/edit_pw';</script>");
+
+        }
+        
+    })
+})
+var comment;
+///////////////////////////////////////////댓글/////
+router.post("/comment",function(req,res){
+    comment = req.body.comment
+    mysqlClient.query('insert into greenday_comment(id,nickname,comment) values(?,?,?)',[post_id,nickname,comment],function(errors,rows){
+        
+        res.redirect('/post/post_title/:id')
+    })
+})
+router.post("/comment/delete/:id",function(req,res){
+    var comment_id = req.params.id;
+    mysqlClient.query('select * from greenday_comment where comment_id=?',[comment_id],function(errors,result){
+        if(result[0].nickname===nickname){
+            mysqlClient.query('delete from greenday_comment where comment_id=? and nickname=?',[comment_id,nickname],function(errors,rows){
+        
+                res.send("<script>alert('댓글이 삭제되었습니다.');location.href='/post/post_title/:id';</script>");
+    
+        })
+        }else{
+            res.send("<script>alert('삭제 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
+
+        }
     })
     
 })

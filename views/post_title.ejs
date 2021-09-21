@@ -38,13 +38,44 @@
                     </div>
                 
                 </form>
-                
+                <br>
+
+                <p>댓글 갯수 : <b style="color: #000;"><%=comment.length%></b> </p>
+                <hr style="margin-top: 5px; background-color: #ef952c; border: 1px solid #ef952c;">
+                <br>
+                <% for(i = 0; i < comment.length; i++) { %>
+                   
+                            <div style="display: flex;">
+                                <p style="color: #adadad;"><%=comment[i].nickname%></p>
+                                <form action="/comment/delete/<%=comment[i].comment_id%>" method="post">
+                                    <button style="border: none; cursor: pointer; background-color: white; margin-left: 5px;"><img width="10px" src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/BC0A8393-F83C-4593-9D63-9D3E056E32F5.svg" alt=""></button>
+                                </form>
+                                
+                            </div>
+                            <p><%=comment[i].comment%></p>  
+                                <br>
+                            
+                           
+                    <% } %>
+                    <hr style="margin-top: 5px; background-color: #ef952c; border: 1px solid #ef952c;">
+
+                    <br>
+                    
+                <form action="/comment" method="post">
+                    <div class="form-group">
+                        
+                        <input class="form-field" type="text" name="comment" id="comment" required>
+                    </div>
+                    
+                    <button type="submit">댓글 달기</button>
+                </form>
+
                 
                 
                
                 
 
-<br>
+
 
 
                 <form action="/update" method="get">
