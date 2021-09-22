@@ -137,9 +137,17 @@ router.get("/board",function(req,res){
 router.post("/board/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
     mysqlClient.query('select * from greenday_board where title like ?',[search_title],function(errors,rows){
-        mysqlClient.query('select * from greenday_post order by post_time desc',function(errors, results){
-            res.render('board.ejs',{title:rows,atitle:results,nickname:nickname,sub:rows,board_title:board_title,post_time:rows})
-        })
+        if(rows.length>0){
+            mysqlClient.query('select * from greenday_post order by post_time desc',function(errors, results){
+            
+                res.render('board.ejs',{title:rows,atitle:results,nickname:nickname,sub:rows,board_title:board_title,post_time:rows})
+
+            
+            })
+        }else{
+            res.send("<script>alert('검색 결과 없음.');location.href='/board';</script>");
+        }
+        
     })
 })
 ///////////////////////////////////////////게시판 만들기/////
@@ -255,8 +263,13 @@ router.post("/newpost",function(req,res){
 router.post("/post/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
     mysqlClient.query('select * from greenday_post where title like ? and board_title=? order by post_time desc',[search_title,board_title],function(errors,rows){
-        
-        res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+        if(rows.length>0){
+            res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+
+        }else{
+            res.send("<script>alert('검색 결과 없음.');location.href='/post';</script>");
+
+        }
     })
 })
 
@@ -288,8 +301,8 @@ router.get("/post/post_title/:id",function(req,res){
 
 ///////////////////////////////////////////프로필/////
 router.get("/profile",function(req,res){
-    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(errors,rows){
-        res.render('profile.ejs',{nickname:nickname, email:rows[0].email, name:rows[0].name});
+    mysqlClient.query('select * from greenday_user as u join greenday_post as p on u.nickname = p.nickname where p.nickname = ? order by post_time desc; ',[nickname],function(errors,rows){
+        res.render('profile.ejs',{profile:rows});
     })
 })
 router.get("/profile/edit_pw",function(req,res){

@@ -13,24 +13,48 @@
             <form action="/profile/edit_pw" method="get">
                 <div class="form-group">
                     <span style="white-space: nowrap;">이름</span>
-                    <input value="<%=name%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
+                    <input value="<%=profile[0].name%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
                 </div>
                 <div class="form-group">
                     <span style="white-space: nowrap;">닉네임</span>
-                    <input value="<%=nickname%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
+                    <input value="<%=profile[0].nickname%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
                 </div>
                 <div class="form-group">
                     <span style="white-space: nowrap;">이메일</span>
-                    <input value="<%=email%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
+                    <input value="<%=profile[0].email%>" class="form-field" type="text" name="post_title" id="post_title" readonly>
                 </div>
                 <button type="submit">비밀번호 변경</button>
             </form>
             
             
             <br>
-
+            
+            <table class="silsigan_post">
+                    
+                    
+                <tr>
+                    
+                    <th>내가 쓴 게시글</th>
+                </tr>
+                <br><br>
             
             
+                <% for(i = 0; i < profile.length; i++) { %>
+                <tr>
+                    
+                    <td>
+                        
+                        <form action="/post/post_title/<%=profile[i].id%>" method="post" >
+                            <input type="submit" name="post_title" id="post_title" class="silsigan" value="<%=profile[i].title %>">
+                            <p style="color: rgb(170, 170, 170); text-align: right; font-size: 12px;"><%=profile[i].board_title%></p>
+                        </form>
+                        
+                        </td>
+                        
+                </tr>
+                <% } %>
+                
+        </table>
 
             
             
