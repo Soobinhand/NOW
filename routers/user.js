@@ -115,11 +115,12 @@ router.post("/login",function(req,res){
 router.get("/home",function(req,res){
     
     
-       
+
         res.render('home.ejs',{nickname:nickname})
-   
+        
     
 })
+
 
 
 ///////////////////////////////////////////게시판/////
@@ -186,8 +187,10 @@ router.post("/post",function(req,res){
 router.get("/post",function(req,res){
     
     mysqlClient.query('select * from greenday_post where board_title=? order by post_time desc',[board_title],function(errors,rows){
-   
-            res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+            mysqlClient.query('select c.id, count(*) as count from greenday_comment as c join greenday_post as p on c.id = p.id where board_title=? group by c.id order by post_time desc',[board_title],function(error,result){
+                res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title,comment_count:result})
+            })
+            
 
     })
     
@@ -263,13 +266,17 @@ router.post("/newpost",function(req,res){
 router.post("/post/search",function(req,res){
     var search_title = "%"+req.body.search_title+"%";
     mysqlClient.query('select * from greenday_post where title like ? and board_title=? order by post_time desc',[search_title,board_title],function(errors,rows){
-        if(rows.length>0){
-            res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title})
+        mysqlClient.query('select c.id, count(*) as count from greenday_comment as c join greenday_post as p on c.id = p.id where board_title=? group by c.id order by post_time desc',[board_title],function(error,result){
+            if(rows.length>0){
+                res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title,comment_count:result})
+    
+            }else{
+                res.send("<script>alert('검색 결과 없음.');location.href='/post';</script>");
+    
+            }
+        })
 
-        }else{
-            res.send("<script>alert('검색 결과 없음.');location.href='/post';</script>");
-
-        }
+        
     })
 })
 
@@ -283,7 +290,7 @@ router.post("/post/post_title/:id",function(req,res){
     post_title= req.body.post_title;
     
 
-    res.redirect('/post/post_title/:id')
+    res.redirect('/post/post_title/'+post_id)
 })
 
 router.get("/post/post_title/:id",function(req,res){
@@ -337,11 +344,16 @@ router.post("/edit",function(req,res){
 var comment;
 ///////////////////////////////////////////댓글/////
 router.post("/comment",function(req,res){
-    comment = req.body.comment
-    mysqlClient.query('insert into greenday_comment(id,nickname,comment) values(?,?,?)',[post_id,nickname,comment],function(errors,rows){
-        
-        res.redirect('/post/post_title/:id')
+    comment = req.body.comment;
+    mysqlClient.query('select * from greenday_board where title=?',[board_title],function(error,result){
+        mysqlClient.query('insert into greenday_comment(id,nickname,comment,board_id) values(?,?,?,?)',[post_id,nickname,comment,result[0].id],function(errors,rows){
+            if(errors){
+                throw errors;
+            }
+            res.redirect('/post/post_title/'+post_id);
+        })
     })
+    
 })
 router.post("/comment/delete/:id",function(req,res){
     var comment_id = req.params.id;
@@ -349,11 +361,11 @@ router.post("/comment/delete/:id",function(req,res){
         if(result[0].nickname===nickname){
             mysqlClient.query('delete from greenday_comment where comment_id=? and nickname=?',[comment_id,nickname],function(errors,rows){
         
-                res.send("<script>alert('댓글이 삭제되었습니다.');location.href='/post/post_title/:id';</script>");
-    
+                res.redirect('/post/post_title/'+post_id);
+                
         })
         }else{
-            res.send("<script>alert('삭제 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
+            res.send("<script>alert('삭제 권한이 없습니다.');history.go(-1);</script>"); 
 
         }
     })

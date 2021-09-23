@@ -43,23 +43,29 @@
                     
                     
                     <tr>
-                        <th></th>
                         <th>게시글 제목</th>
+                        <th>댓글 수</th>
                         <th>작성자</th>
                         <th>작성시간</th>
                     </tr>
                 
-                
+                    <% var j = 0 %>
                     <% for(i = 0; i < title.length; i++) { %>
                     <tr>
-                        <td><p><%=i+1 %></p></td>
-                        <td>
+                        
+                        <td style="float: left;">
                             
                             <form action="/post/post_title/<%=title[i].id%>" method="post">
                                 <input type="submit" name="post_title" id="post_title" class="post_title" value="<%=title[i].title %>">
                             </form>
                             
                             </td>
+                            <% if (j < comment_count.length && comment_count[j].id==title[i].id) { %>
+                                <td><%=comment_count[j].count%></td>
+                                <% j++ %> 
+                            <% }else{ %>
+                                <td>0</td>
+                                <% } %>
                             <td><%=title[i].nickname%></td>
                             <td><%=title[i].post_time%></td>
                         
