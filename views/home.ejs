@@ -26,7 +26,26 @@
             <hr class="home_line">
             <p class="home_text1">찜목록</p>
             
+            <table id="board_table">
+                <tr>
+                </tr>
             
+            <%if(bookmark_title.length>0){%>
+                <%for(var i = 0; i < bookmark_title.length; i++){%>
+                    <tr>
+                        <td>
+                            <form action="/post" method="post">
+                                <input type="submit" name="post_title" id="post_title" class="post_title" value="<%=bookmark_title[i].title %>">
+                            </form>
+                        </td>
+                    </tr>
+                    
+                <%}%>
+            <%}else{%>
+                <p>찜하신 게시판이 없어요~</p>
+            <%}%>
+        </table>
+
             
                    
             

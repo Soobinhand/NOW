@@ -31,7 +31,20 @@
                 </button>
             </form>
             <hr class="home_line">
-            <p class="post_text"><%=board_title%></p>
+                <p class="post_text"><%=board_title%></p>
+                <hr style="border: 1px solid #ef952c;margin-top: 0; margin-bottom: 20px; width: 462px; margin-left: 40px;">
+                <div class="bookmark">
+                    <p>즐겨찾기</p>
+                    <form action="/bookmark" method="POST">
+                        <input type="submit" value="추가">
+                    </form>
+                    <form action="/bookmark/delete" method="POST">
+                        <input type="submit" value="취소">
+                    </form>
+                </div>
+                
+            
+            
             <div class="home_board">
                 
                 

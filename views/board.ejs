@@ -72,7 +72,7 @@
                     </tr>
                     <br><br>
                 
-                
+                <%if(atitle.length>=10){%>
                     <% for(i = 0; i < 10; i++) { %>
                     <tr>
                         
@@ -87,6 +87,22 @@
                             
                     </tr>
                     <% } %>
+                <% }else if(atitle.length>0&&atitle.length<10){ %>
+                    <% for(i = 0; i < atitle.length; i++) { %>
+                        <tr>
+                            
+                            <td>
+                                
+                                <form action="/post/post_title/<%=atitle[i].id%>" method="post" >
+                                    <input type="submit" name="post_title" id="post_title" class="silsigan" value="<%=atitle[i].title %>">
+                                    <p style="color: rgb(170, 170, 170); text-align: right; font-size: 12px;"><%=atitle[i].board_title%> | <%=atitle[i].post_time%></p>
+                                </form>
+                                
+                                </td>
+                                
+                        </tr>
+                        <% } %>
+                <% } %>
                     
             </table>
             </div>

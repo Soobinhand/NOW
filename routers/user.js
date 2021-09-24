@@ -115,8 +115,13 @@ router.post("/login",function(req,res){
 router.get("/home",function(req,res){
     
     
+        mysqlClient.query('select * from greenday_bookmark as bookmark join greenday_board as board on bookmark.bookmark_board_id=board.id where bookmark.bookmark_nickname=?',[nickname],function(err,rows){
+            if(err){
+                throw err;
+            }
+            res.render('home.ejs',{nickname:nickname,bookmark_title:rows})
 
-        res.render('home.ejs',{nickname:nickname})
+        })
         
     
 })
@@ -268,7 +273,11 @@ router.post("/post/search",function(req,res){
     mysqlClient.query('select * from greenday_post where title like ? and board_title=? order by post_time desc',[search_title,board_title],function(errors,rows){
         mysqlClient.query('select c.id, count(*) as count from greenday_comment as c join greenday_post as p on c.id = p.id where board_title=? group by c.id order by post_time desc',[board_title],function(error,result){
             if(rows.length>0){
-                res.render('post.ejs',{nickname:nickname,title:rows,board_title:board_title,comment_count:result})
+                res.render('post.ejs',{
+                    nickname:nickname,
+                    title:rows,
+                    board_title:board_title,
+                    comment_count:result})
     
             }else{
                 res.send("<script>alert('검색 결과 없음.');location.href='/post';</script>");
@@ -308,8 +317,11 @@ router.get("/post/post_title/:id",function(req,res){
 
 ///////////////////////////////////////////프로필/////
 router.get("/profile",function(req,res){
-    mysqlClient.query('select * from greenday_user as u join greenday_post as p on u.nickname = p.nickname where p.nickname = ? order by post_time desc; ',[nickname],function(errors,rows){
-        res.render('profile.ejs',{profile:rows});
+    mysqlClient.query('select * from greenday_user where nickname = ?',[nickname],function(errors,rows){
+        mysqlClient.query('select * from greenday_post where nickname = ?',[nickname],function(error,result){
+            res.render('profile.ejs',{profile:rows,post:result});
+        })
+        
     })
 })
 router.get("/profile/edit_pw",function(req,res){
@@ -368,6 +380,27 @@ router.post("/comment/delete/:id",function(req,res){
             res.send("<script>alert('삭제 권한이 없습니다.');history.go(-1);</script>"); 
 
         }
+    })
+    
+})
+
+
+///////////////////////////////////////////북마크/////
+router.post('/bookmark',function(req,res){
+    mysqlClient.query('select id from greenday_board where title=?',[board_title],function(errors,rows){
+        mysqlClient.query('insert into greenday_bookmark(bookmark_nickname,bookmark_board_id) values(?,?)',[nickname,rows[0].id],function(error,result){
+            res.send("<script>alert('찜목록에 추가되었습니다.');location.href='/post';</script>"); 
+
+        })
+    })
+    
+})
+router.post('/bookmark/delete',function(req,res){
+    mysqlClient.query('select id from greenday_board where title=?',[board_title],function(errors,rows){
+        mysqlClient.query('delete from greenday_bookmark where bookmark_nickname=? and bookmark_board_id=?',[nickname,rows[0].id],function(error,result){
+            res.send("<script>alert('취소');location.href='/post';</script>"); 
+
+        })
     })
     
 })
