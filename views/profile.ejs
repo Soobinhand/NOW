@@ -46,6 +46,8 @@
                         
                         <form action="/post/post_title/<%=post[i].id%>" method="post" >
                             <input type="submit" name="post_title" id="post_title" class="silsigan" value="<%=post[i].title %>">
+                            <input type="text" name="board_title" id="board_title" value="<%=post[i].board_title%>" readonly style="display: none;">
+
                             <p style="color: rgb(170, 170, 170); text-align: right; font-size: 12px;"><%=post[i].board_title%></p>
                         </form>
                         

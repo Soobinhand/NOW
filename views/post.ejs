@@ -70,6 +70,8 @@
                             
                             <form action="/post/post_title/<%=title[i].id%>" method="post">
                                 <input type="submit" name="post_title" id="post_title" class="post_title" value="<%=title[i].title %>">
+                                <input type="text" name="board_title" id="board_title" value="<%=title[i].board_title%>" readonly style="display: none;">
+
                             </form>
                             
                             </td>
@@ -77,7 +79,7 @@
                                 <td><%=comment_count[j].count%></td>
                                 <% j++ %> 
                             <% }else{ %>
-                                <td>0</td>
+                                <td></td>
                                 <% } %>
                             <td><%=title[i].nickname%></td>
                             <td><%=title[i].post_time%></td>

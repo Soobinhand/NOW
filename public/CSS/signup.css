@@ -207,3 +207,15 @@
   text-align: left;
   
 }
+
+.like_button{
+  display: inline;
+}
+.like_button > form  > button{
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
+.like_button > form  > button:hover{
+  opacity: 0.87;
+}

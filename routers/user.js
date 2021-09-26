@@ -116,13 +116,21 @@ router.get("/home",function(req,res){
     
     
         mysqlClient.query('select * from greenday_bookmark as bookmark join greenday_board as board on bookmark.bookmark_board_id=board.id where bookmark.bookmark_nickname=?',[nickname],function(err,rows){
+            
             if(err){
                 throw err;
             }
-            res.render('home.ejs',{nickname:nickname,bookmark_title:rows})
+            mysqlClient.query('select * from greenday_post order by post_time desc',function(errors,results){
+                    mysqlClient.query('select count(*) as c,post.id, post.title, post.board_title, post.post_time from greenday_post as post join greenday_like as liken on post.id=liken.like_post_id group by post.id having count(*) > 0 order by c desc,post_time desc',function(errors,like){
+                        
+                        res.render('home.ejs',{nickname:nickname,bookmark_title:rows,atitle:results,like:like})
 
-        })
-        
+                    })
+
+
+            })
+
+    })
     
 })
 
@@ -131,9 +139,9 @@ router.get("/home",function(req,res){
 ///////////////////////////////////////////게시판/////
 router.get("/board",function(req,res){
     mysqlClient.query('select * from greenday_board',function(errors,rows){
-        mysqlClient.query('select * from greenday_post order by post_time desc',function(errors, results){
-            res.render('board.ejs',{title:rows,atitle:results,nickname:nickname,sub:rows,board_title:board_title,post_time:rows})
-        })
+        
+            res.render('board.ejs',{title:rows,nickname:nickname,sub:rows,board_title:board_title,post_time:rows})
+        
         // res.render('board.ejs',{nickname:nickname,title:rows,sub:rows})
     })
     
@@ -183,8 +191,10 @@ router.post("/newboard",function(req,res){
     
 })
 var board_title
+
 ///////////////////////////////////////////해당 게시판의 게시글/////
 router.post("/post",function(req,res){
+
     board_title = req.body.post_title;
     res.redirect('/post')
 })
@@ -297,7 +307,7 @@ var post_id;
 router.post("/post/post_title/:id",function(req,res){
     post_id = req.params.id;
     post_title= req.body.post_title;
-    
+    board_title = req.body.board_title;
 
     res.redirect('/post/post_title/'+post_id)
 })
@@ -306,8 +316,16 @@ router.get("/post/post_title/:id",function(req,res){
     
     mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
         mysqlClient.query('select * from greenday_comment where id=?',[post_id],function(errors,result){
-            
-            res.render('post_title.ejs',{nickname:rows[0].nickname,title:rows[0].title,content:rows[0].content,id:rows[0].id,comment:result})
+            mysqlClient.query('select * from greenday_like where like_post_id=?',[post_id],function(error,like){
+                res.render('post_title.ejs',{
+                    nickname:rows[0].nickname,
+                    title:rows[0].title,
+                    content:rows[0].content,
+                    id:rows[0].id,
+                    comment:result,
+                    like:like})
+
+            })
 
         })
         
@@ -358,12 +376,18 @@ var comment;
 router.post("/comment",function(req,res){
     comment = req.body.comment;
     mysqlClient.query('select * from greenday_board where title=?',[board_title],function(error,result){
-        mysqlClient.query('insert into greenday_comment(id,nickname,comment,board_id) values(?,?,?,?)',[post_id,nickname,comment,result[0].id],function(errors,rows){
-            if(errors){
-                throw errors;
-            }
-            res.redirect('/post/post_title/'+post_id);
-        })
+        if(error){
+            throw error;
+        }
+        if(result.length>0){
+            mysqlClient.query('insert into greenday_comment(id,nickname,comment,board_id) values(?,?,?,?)',[post_id,nickname,comment,result[0].id],function(errors,rows){
+                if(errors){
+                    throw errors;
+                }
+                res.redirect('/post/post_title/'+post_id);
+            })
+        }
+        
     })
     
 })
@@ -404,5 +428,23 @@ router.post('/bookmark/delete',function(req,res){
     })
     
 })
+///////////////////////////////////////////좋아요/////
+router.post('/like',function(req,res){
+    mysqlClient.query('select * from greenday_like where like_nickname=? and like_post_id=?',[nickname,post_id],function(err, like){
+        if(like.length>0){
+            mysqlClient.query('delete from greenday_like where like_nickname=?',[nickname],function(errors,rows){
+                res.redirect('/post/post_title/'+post_id);      
+            })
+        }else{
+            mysqlClient.query('insert into greenday_like(like_nickname,like_post_id) values(?,?)',[nickname,post_id],function(errors,rows){
+                res.redirect('/post/post_title/'+post_id);      
+              })
+        }
+    })
+       
+})
+
+
+
 module.exports = router
 
