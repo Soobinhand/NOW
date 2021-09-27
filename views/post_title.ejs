@@ -46,9 +46,9 @@
                 <div class="like_button">
                     
                     <%if(like.length>0){%>
-                        <%=like.length%>
+                        <p>좋아요 <b style="color: #000;"><%=like.length%></b>개 </p>
                     <%}else{%>
-                        0
+                        <p>좋아요 <b style="color: #000;">0</b>개</p>
                     <%}%>
                     <form action="/like" method="POST">
                             <button type="submit" class="like_button"><img src="https://img.icons8.com/external-those-icons-fill-those-icons/24/000000/external-like-touch-gestures-those-icons-fill-those-icons.png"/></button>
@@ -58,8 +58,8 @@
                 
 
 
-
-                <p>댓글 갯수 : <b style="color: #000;"><%=comment.length%></b> </p>
+                <br>
+                <p>댓글 <b style="color: #000;"><%=comment.length%></b>개 </p>
                 <hr style="margin-top: 5px; background-color: #ef952c; border: 1px solid #ef952c;">
                 <br>
                 <% for(i = 0; i < comment.length; i++) { %>

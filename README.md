@@ -29,17 +29,37 @@
     - id
     - name
     - email
-    - nickname
+    - nickname(PK)
     - pw
 - now_board
-    - id
+    - id(PK)
     - title
     - sub
 - now_post
-    - id
+    - id(PK)
     - title
     - content
-    - nickname
+    - nickname(FK : now_user(nickname))
+    - board_title
+    - post_time
+- now_bookmark
+    - bookmark_nickname(FK : now_user(nickname))
+    - bookmark_board_id(FK : now_board(id))
+    - {bookmark_nickname, bookmark_board_id}(PK)
+- now_comment
+    - comment_id(PK)
+    - id(FK : now_post(id))
+    - nickname(FK : now_user(nickname))
+    - comment
+    - board_id(FK : now_board(id))
+- now_like
+    - like_nickname(FK : now_user(nickname))
+    - like_post_id(FK : now_post(id))
+    - {like_nickname, like_post_id}(PK)
+
+- ERD  
+![img.png](img.png)
+
 
 ## 백엔드
 ### USER
@@ -96,6 +116,8 @@
 - ~~게시판 버튼~~
 - ~~정보수정 버튼 ; typedef 상단 탭~~
 - ~~찜목록~~
+- ~~실시간 게시글~~
+- ~~실검~~
 ### board.ejs
 - ~~홈 버튼~~
 - ~~게시판 검색 기능~~
@@ -142,10 +164,13 @@
 - ~~댓글 기능~~
 - ~~프로필에서 내가 쓴 글 보기.~~
 - ~~검색 시 검색 결과 없음 출력~~
-- 대댓글.
 - ~~댓글 갯수 보이기~~
 - ~~찜목록~~
-- 로그아웃, 탈퇴(cascade)
-- 프로필 사진
 - ~~좋아요 기능~~
 - ~~실시간 좋아요 랭킹 기능~~
+- ~~DB 정리~~
+- ~~구글 로그인 구현~~
+- mypage.ejs 만들기(user db에 넣기)
+- 프로필 사진
+- 대댓글.
+- 로그아웃, 탈퇴(cascade), 비밀번호 찾기

@@ -7,7 +7,7 @@ var now_session = require('express-session')
 var moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
-
+var passport = require('../config/passport.js');
 ///////////////////////////////////////////세션 및 쿠키/////
 router.use(now_session({
     secret: 'my key',           
@@ -21,6 +21,15 @@ var title;
 ///////////////////////////////////////////DB연결공간/////
 var mysql = require('mysql')
 const { ok } = require('assert')
+const session = require('express-session');
+router.use(session({
+    secret: "SECRET_CODE",
+    cookie: {maxAge: 60*60*1000},
+    resave: true,
+    saveUninitialized:false
+}))
+router.use(passport.initialize());
+router.use(passport.session());
 var mysqlClient = mysql.createConnection({
     host:'localhost',
     port:'3306',
@@ -29,7 +38,7 @@ var mysqlClient = mysql.createConnection({
     database:'greenday'
 })
 mysqlClient.connect()
-///////////////////////////////////////////메인페이지/////
+///////////////////////////////////////////메인페이지//////////////////////////////////////////////////////////////////////////
 
 router.get("/",function(req,res){
     res.sendFile(path.join(__dirname,"../public/index.html"))
@@ -79,6 +88,22 @@ var checkReg = function (pw,pwcheck) {
 
     return 1;
 }
+////구글로그인
+router.get('/google',
+    passport.authenticate('google', { scope: ['profile'] })
+)
+router.get('/auth/google/callback',
+  passport.authenticate('google'), authSuccess
+);
+function authSuccess(req, res) {
+    nickname=req.user.displayName;
+    mysqlClient.query('insert into greenday_user(nickname) values(?)',[nickname],function(err,rows){
+        res.redirect('/home');
+    })
+  }
+
+
+/////
 ///////////////////////////////////////////로그인/////
 
 router.get("/login",function(req,res){
@@ -88,8 +113,8 @@ router.get("/login",function(req,res){
 router.post("/login",function(req,res){
     
     nickname = req.body.login_nickname
-    
     var pw = req.body.login_pw
+
     mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(errors,rows){
         if (errors) {
             throw errors;
@@ -106,7 +131,6 @@ router.post("/login",function(req,res){
             res.send("<script>alert('등록된 아이디가 없습니다.');location.href='/login';</script>");
 
         }
-        
     })
 })
 ///////////////////////////////////////////로그인 후 home 으로 경로 변경/////
@@ -214,9 +238,12 @@ router.post("/delete",function(req,res){
         mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,result){
             if(result[0].nickname===nickname){
                 mysqlClient.query('delete from greenday_comment where id=?',[post_id],function(errors,rows){
-                    mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
-                        res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                    mysqlClient.query('delete from greenday_like where like_post_id=?',[post_id],function(err,rows){
+                        mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
+                            res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                        })
                     })
+                    
                 })
                 
             }else{
