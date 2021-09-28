@@ -157,7 +157,17 @@ router.get("/home",function(req,res){
     })
     
 })
-
+router.post("/nickname/search",function(req,res){
+    var search_nickname = "%"+req.body.search_nickname+"%";
+    mysqlClient.query('select * from greenday_user where nickname like ?',[search_nickname],function(err,rows){
+        if(rows.length > 0){
+            
+            res.render('nickname_search.ejs',{search:rows});
+        }else{
+            res.send("<script>alert('검색 결과 없음.');location.href='/home';</script>");
+        }
+    })
+})
 
 
 ///////////////////////////////////////////게시판/////
@@ -188,6 +198,7 @@ router.post("/board/search",function(req,res){
         
     })
 })
+
 ///////////////////////////////////////////게시판 만들기/////
 router.get("/newboard",function(req,res){
     res.sendFile(path.join(__dirname,"../public/board/new_board.html"))
@@ -459,7 +470,7 @@ router.post('/bookmark/delete',function(req,res){
 router.post('/like',function(req,res){
     mysqlClient.query('select * from greenday_like where like_nickname=? and like_post_id=?',[nickname,post_id],function(err, like){
         if(like.length>0){
-            mysqlClient.query('delete from greenday_like where like_nickname=?',[nickname],function(errors,rows){
+            mysqlClient.query('delete from greenday_like where like_post_id=? and like_nickname=?',[post_id,nickname],function(errors,rows){
                 res.redirect('/post/post_title/'+post_id);      
             })
         }else{
@@ -470,7 +481,51 @@ router.post('/like',function(req,res){
     })
        
 })
+///////////////////////////////////////////마이페이지/////
+router.get('/mypage',function(req,res){
+    
+    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(err,rows){
+        mysqlClient.query('select * from greenday_post where nickname = ?',[nickname],function(error,result){
+            res.render('mypage.ejs',{intro:rows,post:result});
+        })
 
+    })
+})
+
+router.post('/mypage', function(req,res){
+    var intro = req.body.intro;
+    var intro_name = req.body.intro_name;
+    mysqlClient.query('update greenday_user set intro=?,intro_name=? where nickname=?',[intro,intro_name,nickname],function(err,rows){
+        
+        res.redirect('/mypage')
+    })
+})
+
+router.get('/mypage_edit',function(req,res){
+    mysqlClient.query('select * from greenday_user where nickname=?',[nickname],function(err,rows){
+        if(rows[0].nickname===nickname){
+            res.render('mypage_edit.ejs',{mypage:rows})
+        }
+    })
+})
+
+var search_nickname
+router.post('/mypage/:nickname',function(req,res){
+    search_nickname = req.params.nickname
+    res.redirect('/mypage/'+search_nickname)
+})
+
+router.get('/mypage/:nickname',function(req,res){
+    mysqlClient.query('select * from greenday_user where nickname=?',[search_nickname],function(err,rows){
+        if(search_nickname===nickname){
+            res.redirect('/mypage')
+        }else{
+            mysqlClient.query('select * from greenday_post where nickname = ?',[search_nickname],function(error,result){
+                res.render('yourpage.ejs',{your:rows,post:result});
+            })
+        }
+    })
+})
 
 
 module.exports = router

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NOW - 게시글 쓰기</title>
+        <title>NOW - 마이페이지 수정</title>
         <link rel="stylesheet" href="./CSS/signup.css">
     </head>
     <body>
@@ -9,24 +9,18 @@
             <a href="/home" style="background-color: white;" class="aa">
                 <img src="../img/logo.jpg" alt="logo" width="390px">
             </a>
-            <br>
-            <br>
-
-            
-            <form action="/newpost" method="post">
+                <p style="text-align: left; margin-top: 20px; font-size: 40px; text-decoration: 2px underline;">프로필 수정</p>
+                <br>
+            <form action="/mypage" method="POST">
                 <div class="form-group">
-                    <span style="white-space: nowrap;">제목</span>
-                    <input class="form-field" type="text" placeholder="제목" name="post_title" id="post_title" required>
+                    <input type="text" name="intro_name" id="intro_name" class="form-field" placeholder="<%=mypage[0].intro_name%>">
                 </div>
                 <div class="form-group">
-                    <span>내용</span>
-                    <textarea rows="4" cols="30" class="form-field" type="text" placeholder="내용을 입력하세요." name="post_content" id="post_content" required
+                    <textarea rows="4" cols="30" class="form-field" type="text" placeholder="<%=mypage[0].intro%>" name="intro" id="intro"
                     style="width: 100%; height: 200px; resize: none;"></textarea>
                 </div>
-                
-                <button type="submit">게시글 등록</button>
+                <button type="submit">수정</button>
             </form>
-            
                 
             
             

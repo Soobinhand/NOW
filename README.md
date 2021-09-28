@@ -31,6 +31,8 @@
     - email
     - nickname(PK)
     - pw
+    - intro
+    - intro_name
 - now_board
     - id(PK)
     - title
@@ -170,7 +172,10 @@
 - ~~실시간 좋아요 랭킹 기능~~
 - ~~DB 정리~~
 - ~~구글 로그인 구현~~
-- mypage.ejs 만들기(user db에 넣기)
+- ~~mypage.ejs 만들기(user db에 넣기)~~
+- ~~내 프로필 수정 기능~~
+- ~~남이 내 프로필 볼 수 있게~~
+- ~~nickname 검색 기능 구현~~
 - 프로필 사진
 - 대댓글.
 - 로그아웃, 탈퇴(cascade), 비밀번호 찾기

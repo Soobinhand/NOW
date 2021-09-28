@@ -141,25 +141,10 @@
     margin-bottom: 32px;
   }
 
-  .signup >a{
-    width: 200px;
-    height: 50px;
-    padding: 9px 79px 9px 79px;
-    margin-left: 95px;
-    background-color: #99A3BA;
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 900;
-    margin-bottom: 20px;
-    text-decoration: none;
-}
-.signup >a:hover{
-    opacity: 0.87;
-}
 
+.aa{
+  cursor: pointer;
+}
 
 
 .silsigan_post{
@@ -218,4 +203,15 @@
 }
 .like_button > form  > button:hover{
   opacity: 0.87;
+}
+
+.mypage_nickname{
+  font-size: 30px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.mypage_intro{
+  font-size: 15px;
+  
 }

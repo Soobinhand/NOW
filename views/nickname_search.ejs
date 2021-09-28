@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NOW - 사람 이름 검색</title>
+        <link rel="stylesheet" type="text/css" href="../public/CSS/signup.css">
+    </head>
+    <body>
+        <div class="signup">
+                <a href="/home" style="background-color: white;" class="aa">
+                    <img src="../img/logo.jpg" alt="logo" width="390px">
+                </a>
+                <p style="text-align: left; margin-top: 20px; font-size: 40px; text-decoration: 2px underline;">검색 결과</p>
+                <br>
+            <%for(var i = 0; i < search.length; i++){%>
+                <%if(search.length > 0){%>
+                    <form action="/mypage/<%=search[i].nickname%>" method="post" style="margin-top: 20px;">
+
+                        <input value="<%=search[i].nickname%>" type="submit" name="post_title" id="post_title" style="border: none; cursor: pointer; background-color: white; color: #ef952c; font-size: 20px;">
+
+                    </form>
+                    <br>
+                <%}else{%>
+                    검색 결과 없음.
+                <%}%>
+            <% } %>
+                 
+            
+        </div>
+            
+            
+            
+            
+           
+               
+                
+                
+              
+                
+                
+         
+           
+        
+        
+    </body>
+</html>
