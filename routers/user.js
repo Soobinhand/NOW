@@ -355,13 +355,17 @@ router.get("/post/post_title/:id",function(req,res){
     mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,rows){
         mysqlClient.query('select * from greenday_comment where id=?',[post_id],function(errors,result){
             mysqlClient.query('select * from greenday_like where like_post_id=?',[post_id],function(error,like){
-                res.render('post_title.ejs',{
-                    nickname:rows[0].nickname,
-                    title:rows[0].title,
-                    content:rows[0].content,
-                    id:rows[0].id,
-                    comment:result,
-                    like:like})
+                mysqlClient.query('select * from greenday_reply where post_id=?',[post_id],function(err,eee){
+                    res.render('post_title.ejs',{
+                        nickname:rows[0].nickname,
+                        title:rows[0].title,
+                        content:rows[0].content,
+                        id:rows[0].id,
+                        comment:result,
+                        like:like,
+                        reply:eee})
+                })
+                
 
             })
 
@@ -431,13 +435,17 @@ router.post("/comment",function(req,res){
 })
 router.post("/comment/delete/:id",function(req,res){
     var comment_id = req.params.id;
+    
     mysqlClient.query('select * from greenday_comment where comment_id=?',[comment_id],function(errors,result){
         if(result[0].nickname===nickname){
-            mysqlClient.query('delete from greenday_comment where comment_id=? and nickname=?',[comment_id,nickname],function(errors,rows){
+            mysqlClient.query('delete from greenday_reply where reply_id=?',[comment_id],function(err,results){
+                mysqlClient.query('delete from greenday_comment where comment_id=? and nickname=?',[comment_id,nickname],function(errors,rows){
         
-                res.redirect('/post/post_title/'+post_id);
-                
-        })
+                    res.redirect('/post/post_title/'+post_id);
+                    
+                })
+            })
+            
         }else{
             res.send("<script>alert('삭제 권한이 없습니다.');history.go(-1);</script>"); 
 
@@ -527,6 +535,20 @@ router.get('/mypage/:nickname',function(req,res){
     })
 })
 
-
+///////////////////////////////////////////대댓글/////
+router.post('/reply/:id',function(req,res){
+    var reply = req.body.reply;
+    var reply_id = req.params.id;
+    mysqlClient.query('insert into greenday_reply(reply_id,reply_nickname,reply_content,post_id) values(?,?,?,?)',[reply_id,nickname,reply,post_id],function(err,rows){
+        res.redirect('/post/post_title/'+post_id);      
+    })
+})
+router.post('/reply/delete/:id',function(req,res){
+    var reply_id = req.params.id;
+    mysqlClient.query('delete from greenday_reply where id=? and reply_nickname=?',[reply_id,nickname],function(err,rows){
+        res.redirect('/post/post_title/'+post_id);
+    })
+    
+})
 module.exports = router
 

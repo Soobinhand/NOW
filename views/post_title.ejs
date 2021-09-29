@@ -21,7 +21,7 @@
                         <form action="/mypage/<%=nickname%>" method="post">
                             <span>작성자</span>
 
-                            <input value="<%=nickname%>" type="submit" name="post_title" id="post_title" style="border: none; cursor: pointer; background-color: white; color: #ef952c;">
+                            <input value="<%=nickname%>" type="submit" name="post_title" id="post_title" style="border: none; cursor: pointer; background-color: white; color: #ef952c; font-weight: 900; font-size: 15px;">
 
                         </form>
                         <br>
@@ -72,13 +72,48 @@
                 <% for(i = 0; i < comment.length; i++) { %>
                    
                             <div style="display: flex;">
-                                <p style="color: #adadad;"><%=comment[i].nickname%></p>
+                                <form action="/mypage/<%=comment[i].nickname%>" method="post">
+                                    <input value="<%=comment[i].nickname%>" type="submit" name="post_title" id="post_title" style="font-size: 15px; border: none; cursor: pointer; background-color: white; color: #ef952c; font-weight: 900;">
+                                </form>
                                 <form action="/comment/delete/<%=comment[i].comment_id%>" method="post">
                                     <button style="border: none; cursor: pointer; background-color: white; margin-left: 5px;"><img width="10px" src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/BC0A8393-F83C-4593-9D63-9D3E056E32F5.svg" alt=""></button>
                                 </form>
                                 
                             </div>
-                            <p><%=comment[i].comment%></p>  
+                            <details>
+                                <summary style="display: block;">
+                                    <p style="margin-left: 7px;"><%=comment[i].comment%></p>
+                                    <p style="cursor: pointer; font-size: 12px; color: #5c5c5c; margin-left: 7px;">대댓글</p>
+                                </summary>
+                                <%if(reply.length>0){%>
+                                    <%for(j=0; j < reply.length; j++){%>
+                                        
+                                        <%if(comment[i].comment_id===reply[j].reply_id){%>
+                                            <div style="display: flex; margin-top: 20px;">
+                                                <form action="/mypage/<%=reply[j].reply_nickname%>" method="post">
+                                                    <input value="<%=reply[j].reply_nickname%>" type="submit" name="post_title" id="post_title" style="font-size: 15px; border: none; cursor: pointer; background-color: white; color: #ef952c; font-weight: 900; margin-left: 20px;">
+                                                </form>
+                                                <form action="/reply/delete/<%=reply[j].id%>" method="post">
+                                                    <button style="border: none; cursor: pointer; background-color: white;"><img width="10px" src="https://cdn.zeplin.io/609baf49911d5b01a5433e14/assets/BC0A8393-F83C-4593-9D63-9D3E056E32F5.svg" alt=""></button>
+                                                </form>
+                                            </div>
+                                            
+                                            <p style="margin-left: 30px;"><%=reply[j].reply_content%></p> <br>
+                                        <%}%>
+                                    <%}%>
+
+                                <%}else{%>
+                                    <p style="font-size: 12px; color: #adadad; margin-left: 20px;">대댓글이 없습니다.</p>
+                                <%}%>
+                                <form action="/reply/<%=comment[i].comment_id%>" method="POST">
+                                    <div class="form-group">
+                                        <input type="text" name="reply" placeholder="대댓글을 달아보세요" style="width: 300px;">
+
+                                    </div>
+                                </form>
+                            </details>
+                            
+                           
                                 <br>
                             
                            
