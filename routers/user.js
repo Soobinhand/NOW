@@ -248,14 +248,17 @@ router.get("/post",function(req,res){
 router.post("/delete",function(req,res){
         mysqlClient.query('select * from greenday_post where id=?',[post_id],function(errors,result){
             if(result[0].nickname===nickname){
-                mysqlClient.query('delete from greenday_comment where id=?',[post_id],function(errors,rows){
-                    mysqlClient.query('delete from greenday_like where like_post_id=?',[post_id],function(err,rows){
-                        mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
-                            res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                mysqlClient.query('delete from greenday_reply where post_id=?',[post_id],function(err,rows){
+                    mysqlClient.query('delete from greenday_comment where id=?',[post_id],function(errors,rows){
+                        mysqlClient.query('delete from greenday_like where like_post_id=?',[post_id],function(err,rows){
+                            mysqlClient.query('delete from greenday_post where id=?',[post_id],function(errors,rows){
+                                res.send("<script>alert('게시글이 삭제되었습니다.');location.href='/post';</script>");
+                            })
                         })
+                        
                     })
-                    
                 })
+                
                 
             }else{
                 res.send("<script>alert('삭제 권한이 없습니다.');location.href='/post/post_title/:id';</script>"); 
